@@ -1,0 +1,160 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form using CSS3 | Shubham Karmakar</title>
+    <!-- Allura font  -->
+    <link href="https://fonts.googleapis.com/css?family=Allura" rel="stylesheet">
+</head>
+<body>
+<section class="contact-section">
+            <div class="ribbon"></div>
+            <div class="section-wrapper">
+                <div class="contact-form contact">
+                    <form>
+                        <p class="from">from,</p>
+                        <input placeholder="What should I call you?" type="text" name="name" required>
+                        <input placeholder="Where can I reach you?" type="email" name="email" required>
+                        <textarea placeholder="What's on your mind?" type="text" name="message"></textarea>
+                        <div class="contact-form--button">
+                            <input class="button" type="submit" id="submit" value=SUBMIT>
+                        </div>
+                    </form>
+                </div>
+            </div>
+</section>
+
+<style>
+  
+.contact-section {
+    background-color: #464b5e;
+    min-height: 100vh;
+    border-top: none;
+    border-radius: 0.6rem;
+    position: relative;
+    margin: 0 1rem;
+}
+
+.section-wrapper {
+    min-height: 100vh;
+    background-color: #333745;
+    -webkit-clip-path: polygon(50% 40%, 100% 0, 100% 64%, 100% 100%, 0 100%, 0% 60%, 0 0);
+    clip-path: polygon(50% 40%, 100% 2%, 100% 64%, 100% 100%, 0 100%, 0% 60%, 0 2%);
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+}
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 35%;
+    width: 2rem;
+    height: 10rem;
+    background: #d12c71;
+    -webkit-clip-path: polygon(50% 0%, 100% 0, 100% 100%, 50% 91%, 0 100%, 0 0);
+    clip-path: polygon(50% 0%, 100% 0, 100% 100%, 50% 91%, 0 100%, 0 0);
+}
+
+.contact {
+    width: 100%;
+}
+
+.from {
+    font-size: 1.6rem;
+    color: darkGray;
+    font-family: 'Allura', cursive;
+}
+
+.from::first-letter {
+    font-size: 3.6rem !important;
+    font-weight: bold;
+    color: #d12c71;
+}
+
+.contact input {
+    display: block;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    border: 0;
+    padding: 10px 15px;
+    background: transparent;
+    border-bottom: 2px solid #1E242C;
+    font-size: 12pt;
+    margin-bottom: 3px;
+    color: #fff;
+    -webkit-transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.contact input:focus,
+.contact input:active {
+    border-bottom: 2px solid #d12c71;
+}
+
+.contact form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.contact-form {
+    position: absolute;
+    top: 40%;
+}
+
+.contact textarea {
+    width: 100%;
+    background: transparent;
+    color: white;
+    padding: 10px 15px;
+    border: 0;
+    outline: none;
+    font-size: 12pt;
+    border-bottom: 2px solid #1E242C;
+    -webkit-transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1) !important;
+}
+
+.contact textarea:active,
+.contact textarea:focus {
+    border-bottom: 2px solid #d12c71;
+}
+
+.contact-form--button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.contact .button {
+    margin: 5px 0 0 0;
+    font-size: 12pt;
+    padding: 8px 15px;
+    color: #fff;
+    background: transparent;
+    outline: 0;
+    border: 2px solid #fff;
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+    display: inline-block;
+    font-size: 13pt;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+    cursor: pointer;
+    width: 18%;
+}
+
+.contact .button:hover {
+    background-color: white;
+    color: #1E242C;
+    border: 2px solid #1E242C;
+}  
+    
+</style>
