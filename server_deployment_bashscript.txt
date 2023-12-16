@@ -1,0 +1,1007 @@
+#!/bin/bash
+# Write by pimajiqin
+# Date:2021-11-1
+# 服务器环境部署脚本
+# curl https://ft-tools.oss-cn-wulanchabu.aliyuncs.com/tools/deploy.sh | bash -s -- -i -w -c 
+
+####################定义功能函数部分#####################
+
+function tar_cd {
+    software="$1"
+    cd ${sourcepackage_dir}
+    package=(`find -maxdepth 1 -regextype posix-extended -type f -regex "\./${software}[-\.].*\.(gz|bz2|tgz|zip|tar)" -exec basename {} \;`)
+    [ -z "$package" ] && { printf "\033[31;1m$sourcepackage_dir目录下没有找到$software源码包\033[0m\n";exit 1; }
+    [ "${#package[@]}" -gt 1 ] && { printf "\033[31;1m$sourcepackage_dir目录下有多个$software源码包,请移除不要装的包\033[0m\n";exit 1; }
+    [ ! -d $makework_dir ] && mkdir -p $makework_dir
+    cd $makework_dir
+    find -maxdepth 1 -type d -regex "\./${software}[-\.].*" -exec rm -rf {} \;
+    local suffix=`echo $package | gawk -F'.' '{print $NF}'`
+    case $suffix in
+    gz|tgz) tar xzf ${sourcepackage_dir}/$package -C $makework_dir/;;
+    bz2) tar xjf ${sourcepackage_dir}/$package -C $makework_dir/;;
+    tar) tar xf ${sourcepackage_dir}/$package -C $makework_dir/;;
+    zip) unzip -o ${sourcepackage_dir}/$package -d $makework_dir/;;
+    *)  printf "\033[31;1m源码包格式不是(gz|tgz|bz2|zip|tar)当中之一\033[0m\n"
+        exit 1;;
+    esac
+    cd `find -maxdepth 1 -regextype posix-extended -type d -regex "\./${software}[-\.].*"`
+}
+
+
+
+function install_mysql8 {
+    #获取源码安装包
+    wget -N -P ${sourcepackage_dir} ${mysql8_path} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${mycnf8_path} >& /dev/null
+    #卸载rpm方式的mysql软体
+    rpm -e --nodeps `rpm -qa|grep mariadb` || printf "%80s \033[1;32m ......rpm方式的mysql未安装\033[0m \n"
+    #添加Mysql的用户和组
+    grep -q mysql /etc/passwd || adduser -M -s /sbin/nologin mysql
+    groups mysql && \
+    printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  添加mysql的用户组 完成\033[0m\n" |tee -a /root/install_log.txt || \
+    #安装mysql官方要求编译依赖包
+    yum_init_soft
+    yum -y install expect && \
+    yum -y install gcc gcc-c++ make cmake expect automake libncurses* autoconf libxml2 libxml2-devel zlib zlib-devel ncurses ncurses-devel perl-Module-Install.noarch libaio libaio-devel numactl
+    if [ "$?" != 0 ];then
+        printf " \033[1;31mmysql依赖包安装失败\033[0m \n"
+        echo '安装mysql依赖包失败,退出 '|tee -a /root/install_log.txt
+        exit 1
+    fi
+    printf "\033[32;1m`date +"%Y-%m-%d %H:%M:%S"`  mysql依赖包安装 完成\033[0m\n" |tee -a /root/install_log.txt
+    #安装数据库
+
+    ##建立目录
+    mkdir -p /opt/data/mysql/mysqldata /opt/data/mysql/mysqllog
+    chown -R mysql.mysql /opt/data/mysql/mysqllog /opt/data/mysql/mysqldata
+    chmod -R 755 /opt/data/mysql/mysqllog /opt/data/mysql/mysqldata
+
+    #判断源码包是否已经安装
+    if  grep -q "mysql success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  mysql源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+    #解压
+        cd ${sourcepackage_dir}
+        tar zxf ${mysql8version}.tar.gz -C /usr/local/
+        ln -sv /usr/local/${mysql8version} /usr/local/mysql
+
+        #配置my.cnf
+        cp -rf my.cnf /etc/my.cnf
+
+        /usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --datadir=/opt/data/mysql/mysqldata --basedir=/usr/local/mysql --user=mysql --initialize-insecure && \
+        /usr/local/mysql/support-files/mysql.server start
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  mysql安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "mysql success" /root/install_history || echo "install mysql success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  mysql安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+        
+        #add mysql to server 把mysql　bin目录加到环境路径当中
+        ln -s /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+        ln -s /usr/local/mysql/bin/mysql /usr/bin/mysql
+        ln -s /opt/data/mysql/mysqldata/mysql.sock /var/mysql.sock
+
+    fi
+
+    #start mysql server
+    service mysql start
+    
+    #mysql -uroot -p${oldpwd} -e "alter user user() identified by \"${newpwd}\"";
+    cat > tmp_expect.sh << EOF
+#! /usr/bin/expect
+
+spawn /usr/local/mysql/bin/mysql -uroot --skip-password
+expect {
+    "mysql>" {send "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY \"${newpwd}\";\nexit\n"}
+}
+expect eof
+EOF
+    chmod 755 ./tmp_expect.sh
+    expect ./tmp_expect.sh && sleep 5 && rm -rf ./tmp_expect.sh
+
+    sleep 3
+    #环境变量生效
+    source /etc/profile
+    #开机启动
+    chkconfig mysql on
+}
+
+
+
+function install_mysql {
+    #获取源码安装包
+    wget -N -P ${sourcepackage_dir} ${mysql_path} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${mycnf_path} >& /dev/null
+    #卸载rpm方式的mysql软体
+    rpm -qa|grep -q mysql && yum -y remove mysql* || printf "%80s \033[1;32m ......rpm方式的mysql未安装\033[0m \n"
+    #添加Mysql的用户和组
+    grep -q mysql /etc/passwd || adduser -M -s /sbin/nologin mysql
+    groups mysql && \
+    printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  添加mysql的用户组 完成\033[0m\n" |tee -a /root/install_log.txt || \
+    #安装mysql官方要求编译依赖包
+    yum_init_soft
+    yum -y install expect && \
+    yum -y install gcc gcc-c++ make cmake expect automake libncurses* autoconf libxml2 libxml2-devel zlib zlib-devel ncurses ncurses-devel perl-Module-Install.noarch libaio libaio-devel numactl
+    if [ "$?" != 0 ];then
+        printf " \033[1;31mmysql依赖包安装失败\033[0m \n"
+        echo '安装mysql依赖包失败,退出 '|tee -a /root/install_log.txt
+        exit 1
+    fi
+    printf "\033[32;1m`date +"%Y-%m-%d %H:%M:%S"`  mysql依赖包安装 完成\033[0m\n" |tee -a /root/install_log.txt
+    #安装数据库
+
+    ##建立目录
+    mkdir -p /opt/data/mysql/mysqldata /opt/data/mysql/mysqllog
+    chown -R mysql.mysql /opt/data/mysql/mysqllog /opt/data/mysql/mysqldata
+
+    #判断源码包是否已经安装
+    if  grep -q "mysql success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  mysql源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+    #解压
+        cd ${sourcepackage_dir}
+        tar zxf ${mysqlversion}.tar.gz -C /usr/local/
+        ln -sv /usr/local/${mysqlversion} /usr/local/mysql
+
+        #配置my.cnf
+        cp -rf my.cnf /etc/my.cnf
+
+        /usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --initialize
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  mysql安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "mysql success" /root/install_history || echo "install mysql success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  mysql安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+        #add mysql to server
+        \cp -f /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+
+
+        ##把mysql　bin目录加到环境路径当中
+        if grep -qE "^PATH=.+" /etc/profile;then
+            grep -q "/usr/local/mysql/bin" /etc/profile && \
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  已经把mysql　bin目录加到环境路径当中\033[0m\n"|tee -a /root/install_log.txt || \
+            { printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  开始把mysql　bin目录加到环境路径当中\033[0m\n"|tee -a /root/install_log.txt;sed -i 's@^PATH=.\+@PATH=/usr/local/mysql/bin:'$PATH'@' /etc/profile; }
+            #source /etc/profile
+            export PATH=/usr/local/mysql/bin:$PATH
+        else
+            grep -q "/usr/local/mysql/bin" /etc/profile && \
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  已经把mysql　bin目录加到环境路径当中\033[0m\n"|tee -a /root/install_log.txt || \
+            { printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  开始把mysql　bin目录加到环境路径当中\033[0m\n"|tee -a /root/install_log.txt;echo "PATH=/usr/local/mysql/bin:$PATH" >> /etc/profile; }
+            #source /etc/profile
+            export PATH=/usr/local/mysql/bin:$PATH
+        fi
+    fi
+
+    #start mysql server
+    service mysql start
+
+    genpwd=$(cat /opt/data/mysql/mysqllog/error.log | grep "password is generated for root@localhost") || genpwd=""
+    oldpwd=${genpwd##*root@localhost: }
+    #mysql -uroot -p${oldpwd} -e "alter user user() identified by \"${newpwd}\"";
+    cat > tmp_expect.sh << EOF
+#! /usr/bin/expect
+
+spawn /usr/local/mysql/bin/mysql -uroot -p
+expect {
+    "password" { send "${oldpwd}\n";exp_continue;}
+    "mysql>" {send "alter user user() identified by \"${newpwd}\";\nexit\n"}
+}
+expect eof
+EOF
+    chmod 755 ./tmp_expect.sh
+    expect ./tmp_expect.sh && sleep 5 && rm -rf ./tmp_expect.sh
+
+    sleep 3
+    #环境变量生效
+    source /etc/profile
+    #开机启动
+    chkconfig mysql on
+}
+
+
+function disable_selinux {
+    if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config &>/dev/null;
+    then
+        sed -i  's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+        echo -e "\033[32mdisable selinux ok\033[0m"
+    fi
+
+    if [ -s /etc/selinux/config ] && grep '#SELINUXTYPE=targeted' /etc/selinux/config &>/dev/null;
+    then
+        echo -e "\033[32mdisable selinux ok\033[0m"
+    else
+        sed -i  's/SELINUXTYPE=targeted/#SELINUXTYPE=targeted/g' /etc/selinux/config
+        echo -e "\033[32mdisable selinux ok\033[0m"
+    fi
+}
+
+
+function install_jdk_jsvc {
+
+    #判断源码包是否已经安装
+    if  grep -q "jdk success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  jdk之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+        wget -N -P ${sourcepackage_dir} ${jsvc_path} >& /dev/null
+        wget -N -P ${sourcepackage_dir} ${jdk_path} >& /dev/null
+        mkdir -p /opt/app
+        cd ${sourcepackage_dir}
+        tar -zxf ${jdk_version}.tar.gz -C /opt/app/
+        ln -s /opt/app/${jdk_version_path} /opt/app/jdk8
+
+cat >> /etc/profile <<EOF
+export JAVA_HOME=/opt/app/jdk8
+export JRE_HOME=\$JAVA_HOME/jre
+export CLASSPATH=.:\$JAVA_HOME/lib:\$JAVA_HOME/jre/lib:\$CLASSPATH
+export PATH=\$JAVA_HOME/bin:\$JAVA_HOME/jre/bin:\$PATH
+EOF
+
+        source /etc/profile
+        echo $JAVA_HOME
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  jdk安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "mysql jdk" /root/install_history || echo "install jdk success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  jdk安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+     fi
+
+    cd ${sourcepackage_dir}
+    cp jsvc /usr/bin/
+    chmod 775 /usr/bin/jsvc
+}
+
+
+function install_redis {
+
+    wget -N -P ${sourcepackage_dir} ${redis_path} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${redisconf_path} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${redisd_path} >& /dev/null
+
+    #调用redis安装包和解压函数
+    yum -y install make open-ssl-devel gcc glibc gcc-c*
+    if [ "$?" != 0 ];then
+        printf " \033[1;31mredis依赖包安装失败\033[0m \n"
+        echo '安装redis依赖包失败,退出 '|tee -a /root/install_log.txt
+        exit 1
+    fi
+    printf "\033[32;1m`date +"%Y-%m-%d %H:%M:%S"`  redis依赖包安装 完成\033[0m\n" |tee -a /root/install_log.txt
+    #安装数据库
+    #判断源码包是否已经编译过
+    if  grep -q "redis success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  redis源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+    ##建立目录
+    mkdir -p /opt/app/redis /opt/app/redis/logs /opt/app/redis/var /opt/app/redis/conf
+    #调用检查包和解缩函数
+        tar_cd redis
+        make PREFIX=/opt/app/redis install
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  redis安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "redis success" /root/install_history || echo "install redis success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  redis安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+#        if [ $? != 0 ];then
+#            printf " \033[1;31m redis编译失败。。。\033[0m \n" |tee -a /root/install_log.txt
+#            exit 1
+#        fi
+    fi
+
+    ##复制conf
+    cp -f ${sourcepackage_dir}/redis.txt /opt/app/redis/conf/redis.conf
+    ##复制redisd
+    cp -f ${sourcepackage_dir}/redisd.txt /etc/init.d/redisd
+    chmod +x /etc/init.d/redisd
+    ##开机自启动
+    chkconfig redisd on && \
+    printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  设置redisd开机自启动 完成\033[0m\n" |tee -a /root/install_log.txt || \
+    { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  设置redisd开机自启动 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+    ##启动
+    service redisd start
+    printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  启动redis 完成\033[0m \n" |tee -a /root/install_log.txt || \
+    { printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  启动reids 失败\033[0m \n" |tee -a /root/install_log.txt;exit 1; }
+}
+
+
+function install_dotnet104 {
+
+    wget -N -P ${sourcepackage_dir} ${dotnet104_path} >& /dev/null
+
+    #判断源码包是否已经编译过
+    if  grep -q "dotnet success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  dotnet源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        ##建立目录
+        mkdir -p /opt/app/dotnet
+        #调用检查包和解缩函数
+        cd ${sourcepackage_dir}
+        tar zxf ${dotnet104_version}.tar.gz -C /opt/app/dotnet
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`   dotnet安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "dotnet success" /root/install_history || echo "install  dotnet success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`   dotnet安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+        ln -s /opt/app/dotnet/dotnet /usr/local/bin && \
+        printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  dotnet建立软连接 完成\033[0m\n" |tee -a /root/install_log.txt || \
+        { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  dotnet建立软连接 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+    fi
+}
+
+function install_dotnet {
+
+    wget -N -P ${sourcepackage_dir} ${dotnet_path} >& /dev/null
+
+    wget -N -P ${sourcepackage_dir} ${librocksdbdylib} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${librocksdbso} >& /dev/null
+    wget -N -P ${sourcepackage_dir} ${rocksdbdll} >& /dev/null
+
+    #判断源码包是否已经编译过
+    if  grep -q "dotnet success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  dotnet源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        ##建立目录
+        yum -y install snappy
+        mkdir -pv /opt/app/dotnet /opt/game/data /opt/game/logs /opt/game/runtime
+        #调用检查包和解缩函数
+        cd ${sourcepackage_dir}
+        tar zxf ${dotnet_version}.tar.gz -C /opt/app/dotnet&&yum -y install bzip2-devel&&\cp -rf *rock* /usr/lib64/
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  dotnet安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "dotnet success" /root/install_history || echo "install  dotnet success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  dotnet安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+        ln -s `find /usr/lib64/ -type f -name "libbz2.so.1*"` /usr/lib64/libbz2.so.1.0 && \
+        ln -s /opt/app/dotnet/dotnet /usr/local/bin && \
+        printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  dotnet建立软连接 完成\033[0m\n" |tee -a /root/install_log.txt || \
+        { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  dotnet建立软连接 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+    fi
+}
+
+
+function install_ssdb {
+
+    wget -N -P ${sourcepackage_dir} ${ssdb_path} >& /dev/null
+
+    #判断源码包是否已经编译过
+    if  grep -q "ssdb success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  ssdb源码包之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        ##建立目录
+        mkdir -p /opt/data/ssdb/log /opt/data/ssdb/data /opt/data/ssdb/conf
+        tar_cd ssdb
+        #调用检查包和解缩函数
+        make && make install
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  ssdb安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "ssdb success" /root/install_history || echo "install ssdb success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  ssdb安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+    fi
+}
+
+
+function install_system_software {
+
+    #判断源码包是否已经编译过
+    if  grep -q "system_software success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  system_software之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        #安装ntp服务
+        yum -y install ntp && \
+        printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装ntp 完成\033[0m\n" |tee -a /root/install_log.txt || \
+        { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装ntp 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+        # 安装查看系统状态工具
+        yum -y install sysstat
+        rpm -q sysstat > /dev/null  && printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  install sysstat 完成\033[0m\n" |tee -a /root/install_log.txt \
+                      || { printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  install sysstat 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+
+        #修改最大的连接数为65535，重启之后就自动生效。
+        ! grep "*                soft   nofile          65535" /etc/security/limits.conf > /dev/null \
+        && echo '*                soft   nofile          65535'>>/etc/security/limits.conf
+
+        ! grep "*                hard   nofile          65535" /etc/security/limits.conf > /dev/null \
+        && echo '*                hard   nofile          65535'>>/etc/security/limits.conf
+
+        ! grep "*                hard   nproc          65535" /etc/security/limits.conf > /dev/null \
+        && echo '*                hard   nproc          65535'>>/etc/security/limits.conf
+
+        ! grep "*                hard   nproc          65535" /etc/security/limits.conf > /dev/null \
+        && echo '*                hard   nproc          65535'>>/etc/security/limits.conf
+
+        grep -q "system_software success" /root/install_history || echo "install system_software success" >> /root/install_history
+
+    fi
+
+
+
+}
+
+
+function install_zabbix_agent {
+    #判断源码包是否已经安装
+    wget -N -P ${sourcepackage_dir} ${zabbixagent_path} >& /dev/null
+
+    if  grep -q "zabbix_agent success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  zabbix_agent之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+    #安装
+        cd ${sourcepackage_dir}
+        rpm -ivh ${zabbix_rpm}
+
+cat > /etc/zabbix/zabbix_agentd.conf <<EOF
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFileSize=0
+Server=$zabbix_server
+ServerActive=$zabbix_server
+Hostname=
+User=zabbix
+Include=/etc/zabbix/zabbix_agentd.d/*.conf
+EOF
+        sed -i -e "/^Hostname/s/^.*$/Hostname=`hostname`/" /etc/zabbix/zabbix_agentd.conf
+        systemctl restart zabbix-agent
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  zabbix_agent安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "mysql success" /root/install_history || echo "install zabbix_agent success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  zabbix_agent安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+    fi
+}
+
+
+function install_docker {
+
+    #判断源码包是否已经编译过
+    if  grep -q "docker success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  docker之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+
+        # 获取系统版本
+        os_name=(`cat /etc/os-release |grep -w NAME| sed -r 's/.*"(.+)".*/\1/'`)
+
+        if [ $os_name = Amazon ];then
+
+            amazon-linux-extras install docker -y && \
+            service docker start && \
+            printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 完成\033[0m\n" |tee -a /root/install_log.txt || \
+            { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+
+        elif [[ $os_name = Alibaba ]]; then
+
+            yum install -y yum-utils && \
+            yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+            yum -y install docker-ce docker-ce-cli containerd.io && \
+            service docker start && \
+            printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 完成\033[0m\n" |tee -a /root/install_log.txt || \
+            { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+
+        else
+
+            yum install -y yum-utils && \
+            yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+            yum -y install docker-ce docker-ce-cli containerd.io && \
+            service docker start && \
+            printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 完成\033[0m\n" |tee -a /root/install_log.txt || \
+            { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装docker 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+
+        fi
+
+        # 开机启动
+        systemctl enable docker && \
+        grep -q "docker success" /root/install_history || echo "install docker success" >> /root/install_history
+
+        curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+        chmod +x /usr/local/bin/docker-compose && \
+        ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose && \
+        printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装docker-compose 完成\033[0m\n" |tee -a /root/install_log.txt || \
+        { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装docker-compose 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+    fi
+}
+
+
+function yum_init {
+
+    yum -y install $1 && \
+    printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装$1 完成\033[0m\n"  || \
+    { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装$1 失败\033[0m\n" exit 1; }
+}
+
+
+function yum_init_soft {
+
+    #判断源码包是否已经编译过
+    if  grep -q "base_soft success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  base_soft之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        yum_init wget
+        yum_init lrzsz
+        yum_init vim
+        yum_init tmux
+        yum_init rsync
+        yum_init net-tools
+        yum_init zip
+        yum_init unzip
+        yum_init automake
+        yum_init gcc
+        yum_init gcc-c++
+        yum_init libunwind
+        yum_init libicu
+        yum_init expect
+        yum_init numactl
+        yum_init libaio-devel.x86_64
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  base_soft安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "base_soft success" /root/install_history || echo "install base_soft success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  base_soft安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+
+    fi
+
+}
+
+
+
+function install_iptables {
+
+    #判断源码包是否已经编译过
+    if  grep -q "iptables success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  iptables之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+
+        yum install -y iptables && \
+        yum update iptables -y && \
+        yum install iptables-services -y && \
+        printf  "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  安装 iptables 完成\033[0m\n" |tee -a /root/install_log.txt || \
+        { printf  "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  安装 iptables 失败\033[0m\n" |tee -a /root/install_log.txt;exit 1; }
+
+        grep -q "iptables success" /root/install_history || echo "install iptables success" >> /root/install_history
+
+    fi
+
+}
+
+function install_pyhon3 {
+    #判断源码包是否已经安装
+    if  grep -q "pyhon3 success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  pyhon3之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+        rpm -qa|grep python3|xargs rpm -ev --allmatches --nodeps && whereis python3 |xargs rm -frv && whereis python && rm -rf /usr/bin/virtualenv && rm -rf /root/.virtualenvs
+        yum -y install epel-release &&
+        yum -y groupinstall "Development tools" && yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel && yum –y install libffi-devel
+
+        wget -N -P ${sourcepackage_dir} ${python3_path} >& /dev/null
+        cd ${sourcepackage_dir}
+        tar -xvJf ${python3_version}.tar.xz
+        mkdir /usr/local/python3
+        cd ${python3_version}
+        ./configure --prefix=/usr/local/python3 && make && make install
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  pyhon3安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "mysql jdk" /root/install_history || echo "install jdk success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  pyhon3安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+        ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+        ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3
+
+        pip3 install --upgrade pip && pip3 install virtualenv && pip3 install virtualenvwrapper
+        mkdir /root/.virtualenvs
+
+cat >> ~/.bashrc  <<EOF
+VIRTUALENVWRAPPER_PYTHON=/usr/local/python3/bin/python3 # 指定virtualenvwrapper执行的python版本
+export WORKON_HOME=/root/.virtualenvs #虚拟环境存放目录
+source /usr/local/python3/bin/virtualenvwrapper.sh
+EOF
+
+        source ~/.bashrc
+        ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv
+        mkvirtualenv py3
+     fi
+
+}
+
+function install_nginx {
+
+    #判断libmaxminddb是否已经编译过
+    if  grep -q "libmaxminddb success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  libmaxminddb之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+        wget -N -P ${sourcepackage_dir} ${libmaxminddb_path} >& /dev/null
+        cd ${sourcepackage_dir}
+        tar_cd libmaxminddb
+
+        ./configure && make && make install 
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  libmaxminddb安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "libmaxminddb success" /root/install_history || echo "install libmaxminddb success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  libmaxminddb安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+        ldconfig
+        ln -sv /usr/local/lib/libmaxminddb.so.0 /lib64/libmaxminddb.so.0
+    fi
+
+
+    #判断源码包是否已经编译过
+    if  grep -q "nginx success" /root/install_history ;then
+        printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  nginx之前已经安装，不再安装\033[0m\n"|tee -a /root/install_log.txt
+    else
+        # 关闭 selinux
+        disable_selinux
+        install_system_software
+
+        wget -N -P ${sourcepackage_dir} ${nginx_path} >& /dev/null
+        wget -N -P ${sourcepackage_dir} ${ngx_http_module} >& /dev/null
+        wget -N -P ${sourcepackage_dir} ${GeoLite2City} >& /dev/null
+        wget -N -P ${sourcepackage_dir} ${GeoLite2Country} >& /dev/null
+
+        yum install -y lrzsz vim tmux wget rsync zip unzip gcc gcc-c++ pcre pcre-devel zlib zlib-devel openssl openssl-devel libmaxminddb-devel
+        if [ "$?" != 0 ];then
+            printf " \033[1;31mnginx依赖包安装失败\033[0m \n"
+            echo '安装nginx依赖包失败,退出 '|tee -a /root/install_log.txt
+            exit 1
+        fi
+        printf "\033[32;1m`date +"%Y-%m-%d %H:%M:%S"`  nginx依赖包安装 完成\033[0m\n" |tee -a /root/install_log.txt
+
+
+
+        groupadd nginx
+        useradd -g nginx -s /sbin/nologin nginx
+
+        mkdir -p /opt/app
+        cd ${sourcepackage_dir}
+        tar_cd ngx_http_geoip2_module
+
+        cd ${sourcepackage_dir}
+        tar_cd nginx
+
+
+        # 编译
+        ./configure --user=nginx --group=nginx --prefix=/opt/app/nginx-1.16.1 --with-pcre --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_gzip_static_module --with-http_sub_module --with-http_addition_module --add-module=${makework_dir}/ngx_http_geoip2_module-master && \
+        make && make install
+
+        if [ "$?" = 0 ];then
+            printf "\033[1;32m`date +"%Y-%m-%d %H:%M:%S"`  nginx安装成功\033[0m\n" |tee -a /root/install_log.txt
+            grep -q "nginx success" /root/install_history || echo "install nginx success" >> /root/install_history
+        else
+            printf "\033[1;31m`date +"%Y-%m-%d %H:%M:%S"`  nginx安装失败\033[0m\n" |tee -a /root/install_log.txt
+            exit 1
+        fi
+
+        ln -s /opt/app/nginx-1.16.1 /opt/app/nginx
+
+cat > /lib/systemd/system/nginx.service <<EOF
+[Unit]
+Description=nginx
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/opt/app/nginx/sbin/nginx
+ExecReload=/opt/app/nginx/sbin/nginx -s reload
+ExecStop=/opt/app/nginx/sbin/nginx -s quit
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+        systemctl enable nginx
+        systemctl start nginx
+
+        echo "allow all;" >> /opt/app/nginx/conf/ip.blocklist
+        mkdir /opt/app/nginx/conf/conf.d
+        cd ${sourcepackage_dir}
+        tar_cd GeoLite2-City_20191217
+        mv ${makework_dir}/GeoLite2-City_20191217/GeoLite2-City.mmdb /opt/app/nginx/conf
+        tar_cd GeoLite2-Country_20191217
+        mv ${makework_dir}/GeoLite2-Country_20191217/GeoLite2-Country.mmdb /opt/app/nginx/conf
+
+
+
+cat > /opt/app/nginx/conf/nginx.conf <<EOF
+user nginx;
+worker_processes auto;
+error_log /opt/app/nginx/logs/error.log;
+pid /opt/app/nginx/logs/nginx.pid;
+worker_rlimit_nofile 65535;
+events {
+    use epoll;
+    worker_connections 65535;
+}
+http {
+    charset utf-8;
+    include mime.types;
+    include ip.blocklist;
+    default_type application/octet-stream;
+    #geoip_country /opt/app/nginx/conf/GeoLite2-Country.mmdb;
+    geoip2 /opt/app/nginx/conf/GeoLite2-Country.mmdb {
+        auto_reload 5m;
+        \$geoip2_metadata_country_build metadata build_epoch;
+        \$geoip2_data_country_code default=US country iso_code;
+        \$geoip2_data_country_name country names en;
+    }
+
+    #geoip_city /opt/app/nginx/conf/GeoLite2-City.mmdb;
+
+    geoip2 /opt/app/nginx/conf/GeoLite2-City.mmdb {
+        \$geoip2_data_city_name default=London city names en;
+    }
+
+    #include /opt/app/nginx/conf/conf.d/*.conf;
+
+    log_format access_json '{"@timestamp":"\$time_iso8601",'
+                             '"client":"\$remote_addr",'
+                             '"country":"\$geoip2_data_country_name",'
+                             '"region":"\$geoip2_data_country_code ",'
+                             '"metadata":"\$geoip2_metadata_country_build"'
+                             '"city":"\$geoip2_data_city_name",'
+                             '"host":"\$server_addr",'
+                             '"domain":"\$host",'
+                             '"request_method": "\$request_method",'
+                             '"url":"\$uri",'
+                             '"status":"\$status",'
+                             '"responsetime":"\$request_time",'
+                             '"body_bytes_sent": "\$body_bytes_sent",'
+                             '"referer":"\$http_referer",'
+                             '"agent":"\$http_user_agent",'
+                             '"x_forwarded": "\$http_x_forwarded_for",'
+                             '"upstr_addr": "\$upstream_addr",'
+                             '"upstr_host": "\$upstream_http_host",'
+                             '"ups_resp_time": "\$upstream_response_time" }';
+    access_log off;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 60s;
+    keepalive_requests 8192;
+    server_names_hash_bucket_size 128;
+    client_header_buffer_size 4k;
+    client_body_buffer_size 256k;
+    client_max_body_size 4m;
+    open_file_cache max=65535 inactive=60s;
+    open_file_cache_min_uses 1;
+    open_file_cache_valid 60s;
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 4 16k;
+    gzip_comp_level 3;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/xml application/x-javascript application/javascript application/xml application/atom+xml application/xml+rss text/javascript;
+    gzip_vary on;
+    fastcgi_connect_timeout 60;
+    fastcgi_send_timeout 60;
+    fastcgi_read_timeout 60;
+    fastcgi_buffer_size 4k;
+    fastcgi_buffers 256 4k;
+    fastcgi_busy_buffers_size 256k;
+    fastcgi_temp_file_write_size 256k;
+    proxy_redirect off ;
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Scheme \$scheme;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header REMOTE-HOST \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_connect_timeout 30;
+    proxy_send_timeout 30;
+    proxy_read_timeout 60;
+    proxy_buffer_size 256k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+    proxy_temp_file_write_size 256k;
+    proxy_next_upstream error timeout invalid_header http_500 http_503 http_404;
+    proxy_max_temp_file_size 128m;
+    include /opt/app/nginx/conf/conf.d/*.conf;
+
+}
+EOF
+
+
+
+    fi
+}
+
+
+
+function print_error {
+    printf "\033[32;1musage:  $0 -i -w -c -m -M -j -r -d -s -k -p -P -n -z
+    -i:安装初始工具
+    -w:配置systen参数
+    -c:关闭selinux
+
+    -m:安装mysql
+    -M:安装mysql8
+    -j:安装JDK
+    -r:安装redis
+    -d:安装dotnet
+    -D:安装dotnet1.0.4
+    -s:安装ssdb
+    -k:安装docker
+    -p:安装iptables
+    -P:python3
+    -n:安装nginx
+    -z:安装zabbix-agent
+    \033[0m\n"
+    exit 1
+}
+
+
+####################定义变量#####################
+
+url=https://ft-tools.oss-cn-wulanchabu.aliyuncs.com/tools
+
+sourcepackage_dir=/root/tools/source
+makework_dir=/root/tools/src
+
+mysqlversion=mysql-5.7.34-linux-glibc2.12-x86_64
+mysql_path=${url}/mysql/${mysqlversion}.tar.gz
+mycnf_path=${url}/mysql/my.cnf
+
+mysql8version=mysql-8.0.30-el7-x86_64
+mysql8_path=${url}/mysql8/${mysql8version}.tar.gz
+mycnf8_path=${url}/mysql8/my.cnf
+
+zabbix_rpm=zabbix-agent-5.0.0-1.el7.x86_64.rpm
+zabbixagent_path=${url}/zabbix/${zabbix_rpm}
+zabbix_server=$zabbix_server
+echo $zabbix_server
+
+jsvc_path=${url}/jdk/jsvc
+jdk_version=jdk-8u181-linux-x64
+jdk_path=${url}/jdk/${jdk_version}.tar.gz
+jdk_version_path=jdk1.8.0_181
+
+dotnet_version=dotnet-sdk-3.1.411-linux-x64
+dotnet_path=${url}/dotnet/${dotnet_version}.tar.gz
+
+dotnet104_version=dotnet-dev-centos-x64.1.0.4
+dotnet104_path=${url}/dotnet/${dotnet104_version}.tar.gz
+
+librocksdbdylib=${url}/rocksdb/librocksdb.dylib
+librocksdbso=${url}/rocksdb/librocksdb.so
+rocksdbdll=${url}/rocksdb/rocksdb.dll
+
+redis_path=${url}/redis/redis-4.0.8.tar.gz
+redisconf_path=${url}/redis/redis.txt
+redisd_path=${url}/redis/redisd.txt
+
+ssdb_path=${url}/ssdb/ssdb-1.9.4.tar.gz
+
+python3_version=Python-3.9.6
+python3_path=${url}/python/Python-3.9.6.tar.xz
+
+if [ -n "$newpwd" ]; then
+newpwd=$newpwd
+else
+newpwd=123456
+fi
+
+email="chenluobin@feelingtouch.com"
+
+nginx_path=${url}/nginx/nginx-1.16.1.tar.gz
+libmaxminddb_path=${url}/nginx/libmaxminddb-1.7.1.tar.gz
+ngx_http_module=${url}/nginx/ngx_http_geoip2_module-master.zip
+GeoLite2City=${url}/nginx/GeoLite2-City_20191217.tar.gz
+GeoLite2Country=${url}/nginx/GeoLite2-Country_20191217.tar.gz
+
+
+####################脚本执行部分#####################
+
+
+
+[ -z "$1" ] && print_error
+while getopts mMcjrdDszwkipnP opt;do
+    case "$opt" in
+        m) m=true;;
+        M) M=true;;
+        c) c=true;;
+        j) j=true;;
+        r) r=true;;
+        d) d=true;;
+        D) D=true;; 
+        s) s=true;;
+        z) z=true;;
+        w) w=true;;
+        k) k=true;;
+        i) i=true;;
+        p) p=true;;
+        n) n=true;;
+        P) P=true;;
+        *) print_error;;
+    esac
+done
+[ -z "$m$M$c$j$r$d$s$z$w$k$i$p$n$P" ] && print_error
+ps aux | grep EXE|grep -v grep && {
+   echo "[31;5m发现有游戏程序在运行，脚本退出[0m"
+   exit 1
+}
+
+
+#set -e
+
+#  更改DNS
+#resolv=/etc/resolv.conf
+#cp -r $resolv ${resolv}.bak
+#echo -e "nameserver 8.8.8.8 \nnameserver 114.114.114.114" > $resolv
+
+#初始化日志文件
+cat /dev/null > /root/install_log.txt
+[ ! -f /root/install_history ] && cat /dev/null > /root/install_history
+[ ! -d $makework_dir ] && mkdir -p ${makework_dir}
+[ ! -d $sourcepackage_dir ] && mkdir -p ${sourcepackage_dir}
+
+#记录脚本开始执行时间
+BEGINTIME=$(date +"%Y-%m-%d %H:%M:%S")
+
+[ "$i" = true ] && yum_init_soft
+[ "$w" = true ] && install_system_software
+[ "$c" = true ] && disable_selinux
+[ "$m" = true ] && install_mysql
+[ "$M" = true ] && install_mysql8
+[ "$j" = true ] && install_jdk_jsvc
+[ "$r" = true ] && install_redis
+[ "$d" = true ] && install_dotnet
+[ "$D" = true ] && install_dotnet104
+[ "$s" = true ] && install_ssdb
+[ "$k" = true ] && install_docker
+[ "$p" = true ] && install_iptables
+[ "$n" = true ] && install_nginx
+[ "$z" = true ] && install_zabbix_agent
+[ "$P" = true ] && install_pyhon3
+
+#执行完毕的时间
+source /etc/profile
+
+ENDTIME=`date +"%Y-%m-%d %H:%M:%S"`
+begin_data=`date -d  "$BEGINTIME" +%s`    #把当前时间转化为Linux时间
+end_data=`date -d  "$ENDTIME" +%s`
+spendtime=`expr $end_data - $begin_data`  #计算2个时间的差
+echo "本次安装花时:"$spendtime "秒"
+printf "%100s \033[1;32m 本次安装花时:$spendtime 秒\033[0m \n"
+echo "`date +"%Y-%m-%d %H:%M:%S"`  完成安装 "|tee -a /root/install_log.txt
+printf "%50s \033[1;32m ......已完成服务器环境安装,确认如下清单没有错误,然后下一步请安装游戏\033[0m \n"
+sleep 3
+cat /root/install_log.txt
