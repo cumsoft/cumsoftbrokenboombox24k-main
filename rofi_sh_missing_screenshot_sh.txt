@@ -1,0 +1,45 @@
+#!/bin/bash
+
+screenshot() {
+    ACTION_LIST="full\narea\nopen last\narea to clip"
+    SCRIPT=$(dirname $(readlink -f $0))/screenshot.sh
+
+    _rofi() {
+        rofi -dmenu -i -sync -p "screen" -width 8 -lines 4
+    }
+
+    SELECTED_STRING=$(echo -e "$ACTION_LIST" | _rofi "$@")
+
+    if [ "$SELECTED_STRING" == "full" ]; then
+        $SCRIPT
+    elif [ "$SELECTED_STRING" == "area" ]; then
+        $SCRIPT -s
+    elif [ "$SELECTED_STRING" == "open last" ]; then
+        $SCRIPT -b
+    elif [ "$SELECTED_STRING" == "area to clip" ]; then
+        $SCRIPT -C
+    fi
+}
+
+usage() {
+    echo "-h: Open this page
+-c: Open calc in rofi
+-d: Open drun, run, window in rofi
+-l: Open clipmenu in rofi
+-n: Open NetworkManager in rofi
+-p: Power menu
+-s: Screenshot menu"
+}
+
+while getopts "cdlnhps" OPTION; do
+    case $OPTION in
+        c) rofi -show calc ;;
+        d) rofi -show drun ;;
+        l) rofi -show clipmenu ;;
+        n) rofi -show NetworkManager ;;
+        h) usage ;;
+        p) rofi -show power-menu ;;
+        s) screenshot ;;
+        *) usage ;;
+    esac
+done
