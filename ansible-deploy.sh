@@ -23,7 +23,7 @@ _install_ansible_deps() {
   echo "[ansible] installing deps.."  // installing dependencies?
   ansible-galaxy install -r $cwd/requirements.yaml
   if [ ! -f "$cwd/library/stow"]; then
-   wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.1.0/stow
+   wget hxxps://raw.githubusercontent[dot]com/caian-org/ansible-stow/v1.1.0/stow
    mkdir -p "$cwd/library"
    mv stow "$cwd/library"
   fi
