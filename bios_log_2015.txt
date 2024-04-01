@@ -1,0 +1,584 @@
+-- Logs begin at lun 2015-11-09 11:47:33 CET, end at mer 2015-11-25 17:49:30 CET
+nov 09 11:47:33 matteo-pc systemd-journal[155]: Runtime journal is using 8.0M (m
+nov 09 11:47:33 matteo-pc systemd-journal[155]: Runtime journal is using 8.0M (m
+nov 09 11:47:33 matteo-pc kernel: Initializing cgroup subsys cpuset
+nov 09 11:47:33 matteo-pc kernel: Initializing cgroup subsys cpu
+nov 09 11:47:33 matteo-pc kernel: Initializing cgroup subsys cpuacct
+nov 09 11:47:33 matteo-pc kernel: Linux version 3.18.18-1-MANJARO (builduser@man
+nov 09 11:47:33 matteo-pc kernel: Command line: \boot\vmlinuz-3.18-x86_64 ro roo
+nov 09 11:47:33 matteo-pc kernel: e820: BIOS-provided physical RAM map:
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x0000000000058000-0x000000000
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x0000000000059000-0x000000000
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x0000000000086000-0x000000000
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x0000000000100000-0x000000009
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x000000009c2bf000-0x000000009
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x000000009cdbf000-0x000000009
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x000000009cfbf000-0x000000009
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x000000009cfff000-0x000000009
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x00000000e0000000-0x00000000e
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x00000000feb00000-0x00000000f
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x00000000fec00000-0x00000000f
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x00000000fed10000-0x00000000f
+nov 09 11:47:33 matteo-pc kernel: BIOS-e820: [mem 0x00000000fed1c000-0x00000000f
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ CET, end at mer 2015-11-25 17:49:30 CET. --
+l[155]: Runtime journal is using 8.0M (max allowed 294.7M, trying to leave 442.1
+l[155]: Runtime journal is using 8.0M (max allowed 294.7M, trying to leave 442.1
+lizing cgroup subsys cpuset
+lizing cgroup subsys cpu
+lizing cgroup subsys cpuacct
+version 3.18.18-1-MANJARO (builduser@manjaro) (gcc version 5.1.0 (GCC) ) #1 SMP 
+d line: \boot\vmlinuz-3.18-x86_64 ro root=UUID=d0cb0767-c516-4965-94d0-b2efe3f05
+BIOS-provided physical RAM map:
+820: [mem 0x0000000000000000-0x0000000000057fff] usable
+820: [mem 0x0000000000058000-0x0000000000058fff] reserved
+820: [mem 0x0000000000059000-0x0000000000085fff] usable
+820: [mem 0x0000000000086000-0x000000000009ffff] reserved
+820: [mem 0x0000000000100000-0x000000009c2befff] usable
+820: [mem 0x000000009c2bf000-0x000000009cdbefff] reserved
+820: [mem 0x000000009cdbf000-0x000000009cfbefff] ACPI NVS
+820: [mem 0x000000009cfbf000-0x000000009cffefff] ACPI data
+820: [mem 0x000000009cfff000-0x000000009cffffff] usable
+820: [mem 0x00000000e0000000-0x00000000efffffff] reserved
+820: [mem 0x00000000feb00000-0x00000000feb03fff] reserved
+820: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
+820: [mem 0x00000000fed10000-0x00000000fed19fff] reserved
+820: [mem 0x00000000fed1c000-0x00000000fed1ffff] reserved
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+. --
+ax allowed 294.7M, trying to leave 442.1M free of 2.8G available → current limit
+ax allowed 294.7M, trying to leave 442.1M free of 2.8G available → current limit
+
+
+
+jaro) (gcc version 5.1.0 (GCC) ) #1 SMP PREEMPT Fri Jul 10 22:02:30 UTC 2015
+t=UUID=d0cb0767-c516-4965-94d0-b2efe3f05f3d initrd=boot\initramfs-3.18-x86_64.im
+
+0057fff] usable
+0058fff] reserved
+0085fff] usable
+009ffff] reserved
+c2befff] usable
+cdbefff] reserved
+cfbefff] ACPI NVS
+cffefff] ACPI data
+cffffff] usable
+fffffff] reserved
+eb03fff] reserved
+ec00fff] reserved
+ed19fff] reserved
+ed1ffff] reserved
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+M free of 2.8G available → current limit 294.7M).
+M free of 2.8G available → current limit 294.7M).
+
+
+
+PREEMPT Fri Jul 10 22:02:30 UTC 2015
+f3d initrd=boot\initramfs-3.18-x86_64.img
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 294.7M).
+ 294.7M).
+
+
+
+
+g
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 294.7M).
+ 294.7M).
+
+
+
+
+g
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+M free of 2.8G available → current limit 294.7M).
+M free of 2.8G available → current limit 294.7M).
+
+
+
+PREEMPT Fri Jul 10 22:02:30 UTC 2015
+f3d initrd=boot\initramfs-3.18-x86_64.img
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ESCOC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 294.7M).
+ 294.7M).
+
+
+
+
+g
