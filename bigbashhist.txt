@@ -1,0 +1,118 @@
+sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
+adduser vpn
+adduser larkimas
+usermod -aG sudo larkimas
+su - larkimas
+apt install tmux
+cd /root/
+mkdir api
+mv requirements.txt api/
+mv Dockerfile api/
+cd api/
+docker build .
+cp requirements.txt requirements2.txt
+tmux new -s navid
+htop
+tmux new -s larkimas
+vim .bash_history
+ssh nadery@141.11.182.176
+ls
+cd /root/api/
+pwd
+ls
+scp nadery@141.11.182.176:/home/nadery/fapi.tar ./
+rm fapi.tar
+cd api/
+ls
+python3 -m http.server
+ls -l
+ls -lh
+rm Session1.zip
+rm Session2.zip
+ls -lh
+rm Session3.zip
+ls -lh
+unzip Session1.zip
+apt install unzip
+mkdir IEMOCAP
+unzip *.zip -d IEMOCAP/
+ls IEMOCAP/
+unzip Session2.zip -d IEMOCAP/
+unzip Session3.zip -d IEMOCAP/
+unzip Session4.zip -d IEMOCAP/
+unzip Session5.zip -d IEMOCAP/
+ls IEMOCAP/
+ls IEMOCAP/Session
+ls IEMOCAP/Session1/
+rm -r *.zip
+cd IEMOCAP/
+pwd
+cd ..
+zip -r IEMOCAP.zip IEMOCAP
+apt install zip
+python3 -m http.server
+rm -r IEMOCAP
+tmux new -s server
+
+bashist
+
+which python
+apt install python
+python3 -m http.server 8008
+nohup python3 -m http.server 8008 &
+apt install nc
+apt install netcat
+nc -zvw3 127.0.0.1 8008
+curl ipinfo.io
+curl https://gcp-vm-client.provenance.ai/login
+curl https://gcp-vm-client.provenance.ai
+
+bashhist
+
+passwd
+wget -N --no-check-certificate -q -O trojan_install.sh "https://raw.githubusercontent.com/V2RaySSR/Trojan/master/trojan_install.sh" && chmod +x trojan_install.sh && bash trojan_install.sh
+cd .acme.sh/
+sh acme.sh --register-account -m overjerry@mail.com
+wget -N --no-check-certificate -q -O trojan_install.sh "https://raw.githubusercontent.com/V2RaySSR/Trojan/master/trojan_install.sh" && chmod +x trojan_install.sh && bash trojan_install.sh
+bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)
+vim /usr/local/etc/v2ray/config.json
+systemctl enable v2ray
+systemctl start v2ray
+wget -N --no-check-certificate "https://github.000060000.xyz/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+clear
+nslookup http://www.vulnlawyers.co.uk/
+nslookup www.vulnlawyers.co.uk
+dnsrecon -d vulnlawyers.co.uk -D ~/wordlists/subdomains.txt -t brt
+clear
+ffuf -w ~/wordlists/content.txt -t 1 -p 0.1 -H "Cookie: ctfchallenge=eyJkYXRhIjoiZXlKMWMyVnlYMmhoYzJnaU9pSTNPSGRvYm5WbWVDSXNJbkJ5WlcxcGRXMGlPbVpoYkhObGZRPT0iLCJ2ZXJpZnkiOiIyNzZlNjZmOTdjMTRjNjgzMDg5ZGIyYjg2YTRmZWU3YyJ9" -u http://www.vulnlawyers.co.uk/FUZZ -mc all -fc 404
+apt install golang-go
+go get github.com/ffuf/ffuf
+sudo ln -s ~/go/bin/ffuf /usr/sbin/ffuf
+cd ~/wordlists
+wget https://ctfchallenge.com/wordlists-raw/content.txt
+wget https://ctfchallenge.com/wordlists-raw/parameters.txt
+wget https://ctfchallenge.com/wordlists-raw/passwords.txt
+wget https://ctfchallenge.com/wordlists-raw/passwords-large.txt
+wget https://ctfchallenge.com/wordlists-raw/subdomains.txt
+wget https://ctfchallenge.com/wordlists-raw/usernames.txt
+wget https://ctfchallenge.com/wordlists-raw/web-extensions.txt
+cd
+apt install sshuttle
+sudo apt install sshuttle
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sudo apt install sshuttle
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
+sudo apt install sshuttle
+sshuttle -r nadery@142.93.136.22 0.0.0.0/0 -vv
